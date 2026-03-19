@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <title>รักเรามั้ย ❤️</title>
+
+    <style>
+      body {
+        margin: 0;
+        text-align: center;
+        font-family: Arial;
+        background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        color: white;
+        overflow: hidden;
+      }
+
+      h1 {
+        margin-top: 120px;
+        font-size: 40px;
+      }
+
+      button {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+      }
+
+      #yes {
+        position: absolute;
+        left: 30%;
+        top: 65%;
+        background: white;
+        color: #ff6b81;
+      }
+
+      #no {
+        position: absolute;
+        left: 60%;
+        top: 65%;
+        background: #ff4d6d;
+        color: white;
+      }
+
+      #lovePage {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .box {
+        background: white;
+        color: #ff6b81;
+        padding: 25px 35px;
+        border-radius: 20px;
+        font-size: 22px;
+        text-align: center;
+      }
+
+      .highlight {
+        font-size: 28px;
+        font-weight: bold;
+        color: #ff4d6d;
+      }
+
+      .fade-out {
+        animation: fadeOut 2s forwards;
+      }
+      .fade-in {
+        animation: fadeIn 1s forwards;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .heart {
+        position: absolute;
+        font-size: 20px;
+        animation: float 3s linear infinite;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-300px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ✅ เปลี่ยนตรงนี้ -->
+    <h1 id="text">เด็กน้อยย รักพี่มั้ยคับ🤍🥺</h1>
+
+    <button id="yes">รัก 💖</button>
+
+    <!-- ✅ เปลี่ยนอิโมจิ -->
+    <button id="no">ไม่รัก 🥺</button>
+
+    <div id="lovePage">
+      <div class="box" id="loveText"></div>
+    </div>
+
+    <audio id="music" loop>
+      <source src="./love.mp3" type="audio/mpeg" />
+    </audio>
+
+    <audio
+      id="typeSound"
+      src="https://www.myinstants.com/media/sounds/typewriter.mp3"
+    ></audio>
+
+    <script>
+      let noBtn = document.getElementById("no");
+      let yesBtn = document.getElementById("yes");
+      let text = document.getElementById("text");
+      let music = document.getElementById("music");
+      let typeSound = document.getElementById("typeSound");
+
+      let messages = [
+        "ไม่รักหรอ🥹",
+        "รักหน่อยย🫠",
+        "พอแล้วว🥲",
+        "ยอมกดเถอะะ🥺",
+        "จะนอยแล้วนะ🥲",
+        "รับรักนะคนเก่งง🥹",
+      ];
+
+      let index = 0;
+
+      noBtn.addEventListener("click", () => {
+        text.innerText = messages[index];
+        index = (index + 1) % messages.length;
+        move();
+      });
+
+      noBtn.addEventListener("mouseover", move);
+      noBtn.addEventListener("touchstart", move);
+
+      function move() {
+        let x = Math.random() * (window.innerWidth - 120);
+        let y = Math.random() * (window.innerHeight - 120);
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+      }
+
+      function typeText(element, text, speed = 60, callback) {
+        let i = 0;
+        element.innerHTML = "";
+
+        function typing() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            typeSound.currentTime = 0;
+            typeSound.play().catch(() => {});
+            i++;
+            setTimeout(typing, speed);
+          } else if (callback) {
+            callback();
+          }
+        }
+        typing();
+      }
+
+      function playMusicSafe() {
+        music.currentTime = 0;
+        music.play().catch(() => {
+          document.body.addEventListener(
+            "click",
+            () => {
+              music.play();
+            },
+            { once: true }
+          );
+        });
+      }
+
+      yesBtn.addEventListener("click", () => {
+        document.querySelector("h1").style.display = "none";
+        yesBtn.style.display = "none";
+        noBtn.style.display = "none";
+
+        let page = document.getElementById("lovePage");
+        let loveText = document.getElementById("loveText");
+
+        page.style.display = "flex";
+
+        playMusicSafe();
+
+        loveText.innerHTML = '<span class="highlight">ไอที...</span>';
+
+        setTimeout(() => {
+          loveText.classList.add("fade-out");
+        }, 1500);
+
+        setTimeout(() => {
+          loveText.classList.remove("fade-out");
+          loveText.classList.add("fade-in");
+
+          typeText(loveText, "รักไอทีมากๆเลยนะคับ🤍", 60, () => {
+            setTimeout(() => {
+              loveText.classList.remove("fade-in");
+              loveText.classList.add("fade-out");
+
+              setTimeout(() => {
+                loveText.classList.remove("fade-out");
+                loveText.classList.add("fade-in");
+
+                typeText(loveText, "อยู่แบบนี้ด้วยไปนานๆนคนเก่ง🥰🩷", 60);
+              }, 2000);
+            }, 2500);
+          });
+        }, 3200);
+
+        setInterval(() => {
+          let heart = document.createElement("div");
+          heart.className = "heart";
+          heart.innerHTML = "💗";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.bottom = "0";
+
+          document.body.appendChild(heart);
+
+          setTimeout(() => heart.remove(), 3000);
+        }, 300);
+      });
+    </script>
+  </body>
+</html>
